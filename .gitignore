@@ -1,4 +1,5 @@
 __pycache__/
 *.swp
-# traindir/
+traindir/*
 !traindir/trained_113steps/
+traindir/trained_113steps/checkpoints/weights.best.predict.h5
