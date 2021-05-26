@@ -1,0 +1,4 @@
+__pycache__/
+*.swp
+# traindir/
+!traindir/trained_113steps/
