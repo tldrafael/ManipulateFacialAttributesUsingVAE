@@ -79,9 +79,7 @@ def decay_schedule(epoch, learning_rate):
 def sampling(args):
     z_mean, z_log_var = args
     epsilon = tf.random.normal(shape=tf.shape(z_mean), name='get_epsilon')
-    deviation = tf.math.exp(.5 * z_log_var, name='apply_epsilon')
-    offset = tf.math.multiply(deviation, epsilon, name='mult_eps')
-    # offset = 0
+    offset = tf.math.multiply(epsilon, z_log_var, name='offset')
     return z_mean + offset
 
 

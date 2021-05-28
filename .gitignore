@@ -1,5 +1,9 @@
 __pycache__/
 *.swp
+cache/*
+!cache/samples
+!cache/vector_attrs
 traindir/*
-!traindir/trained_113steps/
-traindir/trained_113steps/checkpoints/weights.best.predict.h5
+!traindir/trained_113steps/checkpoints/weights.best.h5
+.ipynb_checkpoints/
+Untitled.ipynb

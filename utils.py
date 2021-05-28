@@ -11,8 +11,8 @@ mask_atts = {0: 'background', 1: 'skin', 2: 'l_brow', 3: 'r_brow', 4: 'l_eye', 5
 
 
 vec_attrs_dir = 'cache/vector_attrs'
-attrs = ['Bald', 'Black_Hair', 'Eyeglasses', 'Heavy Makeup', 'Pale Skin', 'Smiling', 'Young', 'Bangs', 'Blond Hair',
-         'Gray Hair', 'Mustache', 'Pointy Nose', 'Wearing Hat']
+attrs = ['Bald', 'Black_Hair', 'Eyeglasses', 'Heavy_Makeup', 'Pale_Skin', 'Smiling', 'Young', 'Bangs', 'Blond_Hair',
+         'Gray_Hair', 'Mustache', 'Pointy_Nose', 'Wearing_Hat']
 vec_attrs_path = {}
 for at in attrs:
     at = at.replace(' ', '_')
