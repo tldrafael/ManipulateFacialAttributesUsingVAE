@@ -1,7 +1,8 @@
 import os
 import sys
+import datetime
 from glob import iglob
-from skimage import io
+from skimage import io, transform
 import tensorflow as tf
 import numpy as np
 import utils as ut
@@ -64,9 +65,32 @@ class VAE2predict:
         return self.predict(X)
 
 
+def save_predictions(preds, org_dim=(144, 144)):
+    now_timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    now_timestamp = '.'
+    dir_save = os.path.join('cache', now_timestamp)
+    if not os.path.exists(dir_save):
+        os.makedirs(dir_save)
+
+    n_samples = preds[0].shape[0]
+    for i in range(n_samples):
+        for j, name in enumerate(['reconst', 'mask']):
+            jpath = os.path.join(dir_save, '{}_{}.png'.format(i, name))
+            Xsave = preds[j][i]
+            if j == 1:
+                # Round the mask pixels
+                Xsave = Xsave.round()
+            Xsave = transform.resize(Xsave, org_dim)
+            io.imsave(jpath, Xsave)
+
+
 if __name__ == '__main__':
     impath = sys.argv[1]
+    im = io.imread(impath) / 255
+    org_dim = im.shape[:-1]
+    im = transform.resize(im, (144, 144))
 
     vae = VAE2predict()
     vae.load_weights(modelpath='traindir/trained_113steps/checkpoints/weights.best.predict.h5')
-    X_pred = vae.predict_path(im)
+    X_pred = vae.predict(im)
+    save_predictions(X_pred, org_dim=org_dim)

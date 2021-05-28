@@ -1,5 +1,6 @@
-import cv2
+import os
 import numpy as np
+from skimage import io, transform
 
 
 # Taken from here https://github.com/zllrunning/face-parsing.PyTorch/issues/12#issuecomment-647879076,
@@ -7,6 +8,15 @@ import numpy as np
 mask_atts = {0: 'background', 1: 'skin', 2: 'l_brow', 3: 'r_brow', 4: 'l_eye', 5: 'r_eye',
              6: 'eye_g', 7: 'l_ear', 8: 'r_ear', 9: 'ear_r', 10: 'nose', 11: 'mouth',
              12: 'u_lip', 13: 'l_lip', 14: 'neck', 15: 'neck_l', 16: 'cloth', 17: 'hair', 18: 'hat'}
+
+
+vec_attrs_dir = 'cache/vector_attrs'
+attrs = ['Bald', 'Black_Hair', 'Eyeglasses', 'Heavy Makeup', 'Pale Skin', 'Smiling', 'Young', 'Bangs', 'Blond Hair',
+         'Gray Hair', 'Mustache', 'Pointy Nose', 'Wearing Hat']
+vec_attrs_path = {}
+for at in attrs:
+    at = at.replace(' ', '_')
+    vec_attrs_path[at] = os.path.join(vec_attrs_dir, '{}.npy'.format(at))
 
 
 def set_maskpath(x):
@@ -23,8 +33,8 @@ def get_listitems(l, ids):
 
 def load_img(fpath):
     try:
-        im = cv2.imread(fpath)[..., ::-1]
-        return cv2.resize(im, (144, 144))
+        im = io.imread(fpath) / 255
+        return transform.resize(im, (144, 144))
     except Exception:
         return None
 
@@ -32,9 +42,9 @@ def load_img(fpath):
 def load_mask(fpath):
     exclude_maskAtts = [0, 7, 8, 9, 14, 15, 16]
     try:
-        mask = cv2.imread(fpath)[..., 0][..., None]
+        mask = io.imread(fpath)
         mask = (~ np.isin(mask, exclude_maskAtts)) * 1.
-        return cv2.resize(mask, (144, 144))
+        return transform.resize(mask, (144, 144))
     except Exception:
         return None
 

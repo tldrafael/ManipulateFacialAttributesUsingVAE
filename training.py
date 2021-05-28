@@ -81,6 +81,7 @@ def sampling(args):
     epsilon = tf.random.normal(shape=tf.shape(z_mean), name='get_epsilon')
     deviation = tf.math.exp(.5 * z_log_var, name='apply_epsilon')
     offset = tf.math.multiply(deviation, epsilon, name='mult_eps')
+    # offset = 0
     return z_mean + offset
 
 
@@ -236,7 +237,6 @@ class VAE2train:
 
 if __name__ == '__main__':
     celeba_dir = os.environ['celeba']
-    print(celeba_dir)
     list_eval_partition = pd.read_csv(os.path.join(celeba_dir, 'list_eval_partition.txt'), sep='\s+', header=None)
     list_eval_partition.columns = ['bname', 'set_id']
     list_eval_partition['path'] = list_eval_partition['bname'].apply(lambda x: os.path.join(celeba_dir, 'imgs', x))
