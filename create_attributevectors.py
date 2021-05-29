@@ -7,8 +7,8 @@ import utils as ut
 import training as tr
 
 
-def mount_path(bname, im_dir=os.environ['celeba']):
-    return os.path.join(im_dir, 'imgs', bname)
+def mount_path(bname):
+    return os.path.join(os.environ['celeba'], 'imgs', bname)
 
 
 def load_celeba():

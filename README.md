@@ -7,14 +7,15 @@ The reports are written in Portuguese and saved in [reports](./reports).
 The trained model is available [here](traindir/trained_113steps/checkpoints/weights.111-1.25-1.30-1.13-0.08-0.10-0.00.h5).  
 
 For environment compatibility, check the `environment.yml` out.  
+  
 
-![](reports/pics/VAE_Architecture_Short.png)
+## The Architecture Solution
+
+![The training architecture](reports/pics/VAE_Architecture_Short.png)
 
 ## Playing on Colab
 
-Test the project on Colab!!  
-
-[![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1auI8GsWtazP_FHHOX0iAZ6cyC2NX3cZE?usp=sharing)
+Test the project on Colab!! Generate spectrums or add specific attributes on your own, give a trial here. [![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1auI8GsWtazP_FHHOX0iAZ6cyC2NX3cZE?usp=sharing)
 
 ## Dataset 
 
