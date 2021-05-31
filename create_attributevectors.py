@@ -29,7 +29,7 @@ def load_train_bnames():
     return bnames_train
 
 
-def create_attribute_vector(modelpath, df_celeba, attr, bnames_train):
+def create_attribute_vector(modelpath, df_celeba, attr, bnames_train, use_sampling=False):
     """
     As the training and predicting models are different their architecture, you have to adapt the trained weight file
     to the predict model.
@@ -37,8 +37,12 @@ def create_attribute_vector(modelpath, df_celeba, attr, bnames_train):
     trainedVAE = tr.VAE2train()
     trainedVAE.model.load_weights(modelpath)
 
-    model_latent = tf.keras.models.Model(trainedVAE.model.inputs[0],
-                                         trainedVAE.model.get_layer('z_sampling').output)
+    if use_sampling:
+        out_layer = trainedVAE.model.get_layer('z_sampling').output
+    else:
+        out_layer = trainedVAE.model.get_layer('z_mean').output
+
+    model_latent = tf.keras.models.Model(trainedVAE.model.inputs[0], out_layer)
 
     if df_celeba.query('bname in @bnames_train').groupby(attr).size().min() < 10000:
         arg_replace = True

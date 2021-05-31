@@ -10,7 +10,8 @@ import training as tr
 
 
 class VAE2predict:
-    def __init__(self):
+    def __init__(self, use_sampling=False):
+        self.use_sampling = use_sampling
         self._build_model()
 
     def _build_model(self, print_summary=False):
@@ -24,7 +25,11 @@ class VAE2predict:
 
         z_mean = tf.keras.layers.Dense(2048, name='z_mean')(x)
         z_log_var = tf.keras.layers.Dense(2048, name='z_logvar')(x)
-        z_latent = tf.keras.layers.Lambda(tr.sampling, output_shape=(2048,), name='z_sampling')([z_mean, z_log_var])
+
+        if self.use_sampling:
+            z_latent = tf.keras.layers.Lambda(tr.sampling, output_shape=(2048,), name='z_sampling')([z_mean, z_log_var])
+        else:
+            z_latent = z_mean
 
         outs = {}
         for (out_name, out_nc) in [('out_image_pre', 3), ('out_mask', 1)]:

@@ -12,10 +12,11 @@ import training as tr
 
 
 class VAE2AddAttr:
-    def __init__(self):
+    def __init__(self, use_sampling=False):
+        self.use_sampling = use_sampling
         self._build_model()
 
-    def _build_model(self, print_summary=False):
+    def _build_model(self):
         in_image = tf.keras.layers.Input(shape=(144, 144, 3), name='in_image')
         in_attribute = tf.keras.layers.Input(shape=(2048,), name='in_attr')
 
@@ -28,14 +29,15 @@ class VAE2AddAttr:
         z_mean = tf.keras.layers.Dense(2048, name='z_mean')(x)
         z_log_var = tf.keras.layers.Dense(2048, name='z_logvar')(x)
         z_latent = tf.keras.layers.Lambda(tr.sampling, output_shape=(2048,), name='z_sampling')([z_mean, z_log_var])
-        z_addattr = tf.keras.layers.Add(name='in_decoder_pos')([z_latent, in_attribute])
+
+        if self.use_sampling:
+            z_addattr = tf.keras.layers.Add(name='in_decoder_pos')([z_latent, in_attribute])
+        else:
+            z_addattr = tf.keras.layers.Add(name='in_decoder_pos')([z_mean, in_attribute])
 
         outs = {}
         for (out_name, out_nc) in [('out_image_pre', 3), ('out_mask', 1)]:
-            if out_name == 'out_image_pre':
-                outs[out_name] = tr.Decoder()(z_addattr, out_name, out_nc)
-            else:
-                outs[out_name] = tr.Decoder()(z_latent, out_name, out_nc)
+            outs[out_name] = tr.Decoder()(z_addattr, out_name, out_nc)
 
         # Tidy the image to use only the face regions of the estimated output and join with the original background
         x = tf.keras.layers.Multiply()([outs['out_image_pre'], outs['out_mask']])
