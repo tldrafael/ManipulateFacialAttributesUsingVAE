@@ -28,12 +28,13 @@ class VAE2AddAttr:
 
         z_mean = tf.keras.layers.Dense(2048, name='z_mean')(x)
         z_log_var = tf.keras.layers.Dense(2048, name='z_logvar')(x)
-        z_latent = tf.keras.layers.Lambda(tr.sampling, output_shape=(2048,), name='z_sampling')([z_mean, z_log_var])
 
         if self.use_sampling:
-            z_addattr = tf.keras.layers.Add(name='in_decoder_pos')([z_latent, in_attribute])
+            z_latent = tf.keras.layers.Lambda(tr.sampling, output_shape=(2048,), name='z_sampling')([z_mean, z_log_var])
         else:
-            z_addattr = tf.keras.layers.Add(name='in_decoder_pos')([z_mean, in_attribute])
+            z_latent = tf.keras.layers.Lambda(lambda x: x[0], output_shape=(2048,), name='z_sampling')([z_mean, z_log_var])
+
+        z_addattr = tf.keras.layers.Add(name='in_decoder_pos')([z_latent, in_attribute])
 
         outs = {}
         for (out_name, out_nc) in [('out_image_pre', 3), ('out_mask', 1)]:
