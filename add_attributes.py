@@ -38,7 +38,10 @@ class VAE2AddAttr:
 
         outs = {}
         for (out_name, out_nc) in [('out_image_pre', 3), ('out_mask', 1)]:
-            outs[out_name] = tr.Decoder()(z_addattr, out_name, out_nc)
+            if out_name == 'out_image_pre':
+                outs[out_name] = tr.Decoder()(z_addattr, out_name, out_nc)
+            else:
+                outs[out_name] = tr.Decoder()(z_latent, out_name, out_nc)
 
         # Tidy the image to use only the face regions of the estimated output and join with the original background
         x = tf.keras.layers.Multiply()([outs['out_image_pre'], outs['out_mask']])
