@@ -1,4 +1,6 @@
-# README
+# Manipulate Facial Attributes Using VAE
+
+[![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1auI8GsWtazP_FHHOX0iAZ6cyC2NX3cZE?usp=sharing)
 
 This repo presents the final project for [Computer Vision course](https://www.inf.ufsc.br/~aldo.vw/visao/) in INE / UFSC.  
 
@@ -11,7 +13,15 @@ For environment compatibility, check the `environment.yml` out.
 
 ## The Architecture Solution
 
-![The training architecture](reports/pics/VAE_Architecture_Short.png)
+The proposed architecture follows a common VAE architecture besides an additional decoder branch that predicts face masks. During training it uses the face mask labels too, which is used to replace the background of the reconstructed image such that the loss function is applied only on the face pixels. On the other hand, on the prediction mode the background replacement is made by the predicted mask itself, not requiring any extra input but an image.
+
+### On training
+
+<img src="reports/pics/VAE_Architecture_Short.png" width="700"/>
+
+### On prediction
+
+<img src="reports/pics/VAE_Architecture_Short_Predict.png" width="700"/>
 
 ## Playing on Colab
 
@@ -21,7 +31,7 @@ Test the project on Colab!! Generate spectrums or add specific attributes on you
 
 This project used the [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) dataset.  
 
-Besides, as shown in the [poster](./reports/Banner.pdf), the architecture solution uses the face masks during training. Although they will be not needed during prediction. To extract the masks, I used the projec [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch). The masks are available [here](https://drive.google.com/file/d/1BJsxPWnBWxYWHRqMrhjBj3f324SHhBQp/view?usp=sharing).  
+Besides, as said in [Architecture](#architecture), the architecture solution uses the face masks during training. Although they will be not needed during prediction. To extract the masks, I used the projec [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch). The masks are available for download [here](https://drive.google.com/file/d/1BJsxPWnBWxYWHRqMrhjBj3f324SHhBQp/view?usp=sharing).  
 
 ## Training
 
@@ -57,7 +67,9 @@ python add_attributes.py -f cache/samples/077771.jpg -a Smiling
 
 The attributes are represented by vectors stored in `cache/vector_attrs/`.  
 
-To generate more attributes available on the celebA, run:  
+## Create new Vector Attributes  
+
+To generate more vector attributes available on the celebA, run:  
 ```
 python create_attributevectors.py Bags_Under_Eyes 
 ```
