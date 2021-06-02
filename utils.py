@@ -73,7 +73,7 @@ class InputGen:
 
     def load_images(self):
         ims = [load_img(self.impaths[i]) for i in self.load_ids]
-        self.X = np.stack(ims) / 255.
+        self.X = np.stack(ims)
 
         if not self.mode_predict:
             mask = [load_mask(self.maskpaths[i]) for i in self.load_ids]

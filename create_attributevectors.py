@@ -49,6 +49,9 @@ def create_attribute_vector(modelpath, df_celeba, attr, bnames_train, use_sampli
     else:
         arg_replace = False
 
+    n_max = subdf.groupby(attr).size().max()
+    nsamples = np.min([n_max, nsamples])
+
     bnames_attr = df_celeba.query('bname in @bnames_train and {} == 1'.format(attr)).\
                             sample(nsamples, replace=arg_replace, axis=0)['bname'].values
     bnames_attr_not = df_celeba.query('bname in @bnames_train and {} == -1'.format(attr)).\
