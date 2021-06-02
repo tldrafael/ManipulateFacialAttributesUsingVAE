@@ -33,7 +33,7 @@ def get_listitems(l, ids):
 
 def load_img(fpath):
     try:
-        im = io.imread(fpath) / 255
+        im = io.imread(fpath)
         return transform.resize(im, (144, 144))
     except Exception:
         return None
@@ -73,7 +73,7 @@ class InputGen:
 
     def load_images(self):
         ims = [load_img(self.impaths[i]) for i in self.load_ids]
-        self.X = np.stack(ims)
+        self.X = np.stack(ims) / 255
 
         if not self.mode_predict:
             mask = [load_mask(self.maskpaths[i]) for i in self.load_ids]
