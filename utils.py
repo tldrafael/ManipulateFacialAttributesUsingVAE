@@ -1,6 +1,7 @@
 import os
 import numpy as np
-from skimage import io, transform
+from skimage import io
+import cv2
 
 
 # Taken from here https://github.com/zllrunning/face-parsing.PyTorch/issues/12#issuecomment-647879076,
@@ -31,10 +32,18 @@ def get_listitems(l, ids):
     return list(map(l.__getitem__, ids))
 
 
+def resize_imx144(x):
+    '''
+    Function created to isolate the cv2 method, mainly becase skimage.transform.resize changes
+    the type of the input array, which can mislead the data flow.
+    '''
+    return cv2.resize(x, (144, 144))
+
+
 def load_img(fpath):
     try:
         im = io.imread(fpath)
-        return transform.resize(im, (144, 144))
+        return resize_imx144(im)
     except Exception:
         return None
 
@@ -44,7 +53,7 @@ def load_mask(fpath):
     try:
         mask = io.imread(fpath)
         mask = (~ np.isin(mask, exclude_maskAtts)) * 1.
-        return transform.resize(mask, (144, 144))
+        return resize_imx144(mask)
     except Exception:
         return None
 

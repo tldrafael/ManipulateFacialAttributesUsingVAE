@@ -2,7 +2,8 @@ import os
 import sys
 import datetime
 from glob import iglob
-from skimage import io, transform
+from skimage import io
+import cv2
 import tensorflow as tf
 import numpy as np
 import utils as ut
@@ -85,7 +86,7 @@ def save_predictions(preds, org_dim=(144, 144)):
             if j == 1:
                 # Round the mask pixels
                 Xsave = Xsave.round()
-            Xsave = transform.resize(Xsave, org_dim)
+            Xsave = cv2.resize(Xsave, org_dim)
             io.imsave(jpath, Xsave)
 
 
@@ -93,7 +94,7 @@ if __name__ == '__main__':
     impath = sys.argv[1]
     im = io.imread(impath) / 255
     org_dim = im.shape[:-1]
-    im = transform.resize(im, (144, 144))
+    im = ut.resize_imx144(im)
 
     vae = VAE2predict()
     vae.load_weights(modelpath='traindir/trained_113steps/checkpoints/weights.best.predict.h5')

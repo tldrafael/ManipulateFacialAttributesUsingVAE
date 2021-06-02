@@ -3,7 +3,7 @@ import os
 import sys
 import datetime
 from glob import iglob
-from skimage import io, transform
+from skimage import io
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     args = parse_args()
     im = io.imread(args.impath) / 255
     org_dim = im.shape[:-1]
-    im = transform.resize(im, (144, 144))
+    im = ut.resize_imx144(im)
 
     vae = VAE2AddAttr()
     vae.load_weights(modelpath='traindir/trained_113steps/checkpoints/weights.best.predict.h5')
