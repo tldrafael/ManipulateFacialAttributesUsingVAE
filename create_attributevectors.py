@@ -29,7 +29,7 @@ def load_train_bnames():
     return bnames_train
 
 
-def create_attribute_vector(modelpath, df_celeba, attr, bnames_train, use_sampling=False):
+def create_attribute_vector(modelpath, df_celeba, attr, bnames_train, use_sampling=False, nsamples=10000, bs=100):
     """
     As the training and predicting models are different their architecture, you have to adapt the trained weight file
     to the predict model.
@@ -44,24 +44,25 @@ def create_attribute_vector(modelpath, df_celeba, attr, bnames_train, use_sampli
 
     model_latent = tf.keras.models.Model(trainedVAE.model.inputs[0], out_layer)
 
-    if df_celeba.query('bname in @bnames_train').groupby(attr).size().min() < 10000:
+    if df_celeba.query('bname in @bnames_train').groupby(attr).size().min() < nsamples:
         arg_replace = True
     else:
         arg_replace = False
 
     bnames_attr = df_celeba.query('bname in @bnames_train and {} == 1'.format(attr)).\
-                            sample(10000, replace=arg_replace, axis=0)['bname'].values
+                            sample(nsamples, replace=arg_replace, axis=0)['bname'].values
     bnames_attr_not = df_celeba.query('bname in @bnames_train and {} == -1'.format(attr)).\
-                                sample(10000, replace=arg_replace, axis=0)['bname'].values
+                                sample(nsamples, replace=arg_replace, axis=0)['bname'].values
 
     fpaths_attr = [mount_path(b) for b in bnames_attr]
     fpaths_attr_not = [mount_path(b) for b in bnames_attr_not]
 
-    gen_attr = ut.InputGen(impaths=fpaths_attr, shuffle=False, loadsize_factor=10, bs=100, mode_predict=True)
-    gen_attr_not = ut.InputGen(impaths=fpaths_attr_not, shuffle=False, loadsize_factor=10, bs=100, mode_predict=True)
+    gen_attr = ut.InputGen(impaths=fpaths_attr, shuffle=False, loadsize_factor=10, bs=bs, mode_predict=True)
+    gen_attr_not = ut.InputGen(impaths=fpaths_attr_not, shuffle=False, loadsize_factor=10, bs=bs, mode_predict=True)
 
-    preds_attr = model_latent.predict(gen_attr.generator(), steps=100)
-    preds_attr_not = model_latent.predict(gen_attr_not.generator(), steps=100)
+    steps = np.ceil(nsamples / bs).astype(int)
+    preds_attr = model_latent.predict(gen_attr.generator(), steps=steps)
+    preds_attr_not = model_latent.predict(gen_attr_not.generator(), steps=steps)
     return preds_attr.mean(axis=0) - preds_attr_not.mean(axis=0)
 
 
