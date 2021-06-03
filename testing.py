@@ -97,6 +97,6 @@ if __name__ == '__main__':
     im = ut.resize_imx144(im)
 
     vae = VAE2predict()
-    vae.load_weights(modelpath='traindir/trained_113steps/checkpoints/weights.best.predict.h5')
+    vae.load_weights(modelpath=ut.modelpath_best_predict)
     X_pred = vae.predict(im)
     save_predictions(X_pred, org_dim=org_dim)

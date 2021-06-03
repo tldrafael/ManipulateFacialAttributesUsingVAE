@@ -13,7 +13,7 @@ For environment compatibility, check the `environment.yml` out.
 
 ## The Architecture Solution
 
-The proposed architecture has a common VAE structure besides an additional decoder branch that predicts face masks. During training it uses the face mask labels too, which is used to replace the background of the reconstructed image such that the loss function is applied only on the face pixels. On the other hand, on the prediction mode the background replacement is made by the predicted mask itself, not requiring any extra input but an image.
+The proposed architecture has a common VAE structure besides an additional decoder branch that predicts face masks. During training it uses face masks as labels too, which are used to replace the background of the reconstructed image such that the loss function is applied only on the face pixels. On the other hand, on the prediction mode the background replacement is made straightly by the predicted mask, not requiring any extra input but an image.  
 
 ### On training
 
@@ -31,7 +31,7 @@ Test the project on Colab!! Generate spectrums or add specific attributes on you
 
 This project used the [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) dataset.  
 
-Besides, as said in [Architecture](#architecture), the solution uses the face masks during training. Although they will be not needed during prediction. To extract the masks, I used the projec [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch). The masks data are available for downloading [here](https://drive.google.com/file/d/1BJsxPWnBWxYWHRqMrhjBj3f324SHhBQp/view?usp=sharing).  
+Besides, as said in the [Architecture](#the-architecture-solution) session, the solution uses face masks during training. Although they are not required during prediction. For the masks extraction, I used the project [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch). The masks data are available for downloading [here](https://drive.google.com/file/d/1BJsxPWnBWxYWHRqMrhjBj3f324SHhBQp/view?usp=sharing).  
 
 ## Training
 
@@ -49,6 +49,11 @@ python convert_model_toprediction.py <NEW_TRAINFILE>.h5
 It saves a new object on the same directory with the suffix `*.predict.*` on the filename.  
 
 ## Testing
+
+Ensure that you have the prediction version of the pretrained model:  
+```
+python convert_model_toprediction.py traindir/pretrained/checkpoints/weights.235-1.23-1.30-1.12-0.07-0.10-0.00.h5
+```
 
 During testing, you don't need the ground truth of the face mask, the NN generates a reconstructed version of the image and a mask in the `cache` dir.  
 ```

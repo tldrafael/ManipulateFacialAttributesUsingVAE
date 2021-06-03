@@ -109,7 +109,7 @@ if __name__ == '__main__':
     im = ut.resize_imx144(im)
 
     vae = VAE2AddAttr()
-    vae.load_weights(modelpath='traindir/trained_113steps/checkpoints/weights.best.predict.h5')
+    vae.load_weights(modelpath=ut.modelpath_best_predict)
 
     vec_attr = np.load(ut.vec_attrs_path[args.attr])
     X_pred, attr_factor = vae.predict_spectrum(im[None], vec_attr[None])

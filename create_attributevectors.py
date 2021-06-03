@@ -76,12 +76,11 @@ def create_attribute_vector(modelpath, df_celeba, attr, bnames_train, use_sampli
 
 if __name__ == '__main__':
     attr = sys.argv[1]
-    modelpath = 'traindir/trained_113steps/checkpoints/weights.best.h5'
     df_celeba = load_celeba()
     # Use only the training samples to estimate the attribute vectors
     bnames_train = load_train_bnames()
 
-    vec_attr = create_attribute_vector(modelpath, df_celeba, attr, bnames_train)
+    vec_attr = create_attribute_vector(ut.modelpath_best, df_celeba, attr, bnames_train)
 
     outfile = os.path.join('cache', '{}.npy'.format(attr))
     np.save(outfile, vec_attr)

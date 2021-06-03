@@ -4,6 +4,9 @@ from skimage import io
 import cv2
 
 
+modelpath_best = 'traindir/pretrained/checkpoints/weights.235-1.23-1.30-1.12-0.07-0.10-0.00.h5'
+modelpath_best_predict = 'traindir/pretrained/checkpoints/weights.235-1.23-1.30-1.12-0.07-0.10-0.00.predict.h5'
+
 # Taken from here https://github.com/zllrunning/face-parsing.PyTorch/issues/12#issuecomment-647879076,
 # which is different from the official project https://github.com/switchablenorms/CelebAMask-HQ/tree/master/face_parsing
 mask_atts = {0: 'background', 1: 'skin', 2: 'l_brow', 3: 'r_brow', 4: 'l_eye', 5: 'r_eye',
