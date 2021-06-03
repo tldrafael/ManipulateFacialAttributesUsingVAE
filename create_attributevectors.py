@@ -44,7 +44,7 @@ def create_attribute_vector(modelpath, df_celeba, attr, bnames_train, use_sampli
 
     model_latent = tf.keras.models.Model(trainedVAE.model.inputs[0], out_layer)
 
-    g_ = df_celeba.groupby(attr).size().max()
+    g_ = df_celeba.groupby(attr).size()
     n_max = g_.max()
     n_min = g_.min()
     nsamples = np.min([n_max, nsamples])
