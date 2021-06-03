@@ -44,13 +44,15 @@ def create_attribute_vector(modelpath, df_celeba, attr, bnames_train, use_sampli
 
     model_latent = tf.keras.models.Model(trainedVAE.model.inputs[0], out_layer)
 
-    if df_celeba.query('bname in @bnames_train').groupby(attr).size().min() < nsamples:
+    g_ = df_celeba.groupby(attr).size().max()
+    n_max = g_.max()
+    n_min = g_.min()
+    nsamples = np.min([n_max, nsamples])
+
+    if n_min < nsamples:
         arg_replace = True
     else:
         arg_replace = False
-
-    n_max = subdf.groupby(attr).size().max()
-    nsamples = np.min([n_max, nsamples])
 
     bnames_attr = df_celeba.query('bname in @bnames_train and {} == 1'.format(attr)).\
                             sample(nsamples, replace=arg_replace, axis=0)['bname'].values
