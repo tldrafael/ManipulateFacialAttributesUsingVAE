@@ -29,7 +29,8 @@ def load_train_bnames():
     return bnames_train
 
 
-def create_attribute_vector(modelpath, df_celeba, attr, bnames_train, use_sampling=False, nsamples=10000, bs=100):
+def create_attribute_vector(modelpath, df_celeba, attr, bnames_train, use_sampling=False, nsamples=10000, bs=100,
+                            loadsize_factor=1):
     """
     As the training and predicting models are different their architecture, you have to adapt the trained weight file
     to the predict model.
@@ -62,8 +63,10 @@ def create_attribute_vector(modelpath, df_celeba, attr, bnames_train, use_sampli
     fpaths_attr = [mount_path(b) for b in bnames_attr]
     fpaths_attr_not = [mount_path(b) for b in bnames_attr_not]
 
-    gen_attr = ut.InputGen(impaths=fpaths_attr, shuffle=False, loadsize_factor=10, bs=bs, mode_predict=True)
-    gen_attr_not = ut.InputGen(impaths=fpaths_attr_not, shuffle=False, loadsize_factor=10, bs=bs, mode_predict=True)
+    gen_attr = ut.InputGen(impaths=fpaths_attr, shuffle=False, loadsize_factor=loadsize_factor, bs=bs,
+                           mode_predict=True)
+    gen_attr_not = ut.InputGen(impaths=fpaths_attr_not, shuffle=False, loadsize_factor=loadsize_factor, bs=bs,
+                               mode_predict=True)
 
     steps = np.ceil(nsamples / bs).astype(int)
     preds_attr = model_latent.predict(gen_attr.generator(), steps=steps)
