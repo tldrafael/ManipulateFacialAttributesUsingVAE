@@ -17,11 +17,11 @@ The proposed architecture has a common VAE structure besides an additional decod
 
 ### On training
 
-<img src="reports/pics/VAE_Architecture_Short.png" width="700"/>
+<img src="reports/pics/VAE_Architecture_Short.png" width="800"/>
 
 ### On prediction
 
-<img src="reports/pics/VAE_Architecture_Short_Predict.png" width="700"/>
+<img src="reports/pics/VAE_Architecture_Short_Predict.png" width="800"/>
 
 ## Playing on Colab
 
@@ -55,7 +55,7 @@ During testing, you don't need the ground truth of the face mask, the NN generat
 python testing.py cache/samples/077771.jpg
 ```
 
-![](reports/pics/outs_077771.png)
+![](./reports/pics/out_077771.png)
 
 
 ## Adding Attribute
@@ -68,7 +68,7 @@ The command bellow generates a spectrum of that attribute, and saves a file `spe
 python add_attributes.py -f cache/samples/077771.jpg -a Smiling
 ```
 
-![](reports/pics/outs_077771_spectrum.png)
+![](reports/pics/out_077771_spectrum.png)
 
 The attributes are represented by vectors stored in `cache/vector_attrs/`. You can generate more on your own.  
 
