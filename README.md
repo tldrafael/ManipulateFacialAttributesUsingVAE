@@ -31,7 +31,7 @@ Test the project on Colab!! Generate spectrums or add specific attributes on you
 
 This project used the [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) dataset.  
 
-Besides, as said in the [Architecture](#the-architecture-solution) session, the solution uses face masks during training. Although they are not required during prediction. For the masks extraction, I used the project [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch). The masks data are available for downloading [here](https://drive.google.com/file/d/1BJsxPWnBWxYWHRqMrhjBj3f324SHhBQp/view?usp=sharing).  
+Besides, as said in the [Architecture](#the-architecture-solution) session, the solution uses face masks during training. Although they are not required during prediction. For the masks extraction, I used the project [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch). The masks data are available for downloading [here](https://drive.google.com/uc?id=1t85fMPgVjsWJMkT3-BP2pAFeXWg7nXpU&export=download).  
 
 ## Training
 
